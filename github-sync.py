@@ -28,4 +28,11 @@ def handler(system, this):
             system.setting(name, value=data)
         elif ext == '.py':
             system.flow(name, script=content)
+
+    this.flow(
+        'ansible-test',
+        run=True,
+        wait=False,
+    )
+
     return this.success('all done')
