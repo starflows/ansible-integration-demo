@@ -19,7 +19,9 @@ def handler(system, this):
         run=True,
     )
     for file in system.files(dir='ansible-integration-demo'):
-        path, content = file.get('path', 'content')
+        type, path, content = file.get('type', 'path', 'content')
+        if type != 'file':
+            continue
         name, ext = os.path.splitext(os.path.basename(path))
         if ext == '.yaml':
             data = yaml.safe_load(content)
