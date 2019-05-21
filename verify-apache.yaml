@@ -1,26 +1,29 @@
 ---
-- hosts: webservers
+- hosts: all
   vars:
     http_port: 80
-    max_clients: 200
-  remote_user: root
+    version: 1
   tasks:
   - name: ensure apache is at the latest version
-    yum:
-      name: httpd
+    apt:
+      name: apache2
       state: latest
+  - name: write the index page
+    template:
+      src: index.html.j2
+      dest: /var/www/html/index.html
   - name: write the apache config file
     template:
-      src: /srv/httpd.j2
-      dest: /etc/httpd.conf
+      src: test-site.conf.j2
+      dest: /etc/apache2/sites-enabled/test-site.conf
     notify:
     - restart apache
   - name: ensure apache is running
     service:
-      name: httpd
+      name: apache2
       state: started
   handlers:
     - name: restart apache
       service:
-        name: httpd
+        name: apache2
         state: restarted
