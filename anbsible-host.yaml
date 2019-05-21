@@ -1,0 +1,9 @@
+hostname: TODO
+hostkey: ssh-rsa TODO
+username: TODO
+key: |
+  -----BEGIN RSA PRIVATE KEY-----
+  TODO
+  -----END RSA PRIVATE KEY-----
+protect_inputs:
+  - key
