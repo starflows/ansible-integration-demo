@@ -11,25 +11,30 @@ def handler(system, this):
     if target_hosts:
         script += f' -i "{target_hosts},"'
     ansible_host = system.setting(ansible_host_setting).get('value')
+    tasks = []
     for file in files:
-        this.task(
+        tasks.append(this.task(
             'SCP',
             **ansible_host,
             src=f'cloudomation:ansible-integration-demo/{file}',
             dst=file,
             run=True,
-        )
-    this.task(
+            wait=False,
+        ))
+    tasks.append(this.task(
         'SCP',
         **ansible_host,
         src=f'cloudomation:ansible-integration-demo/{playbook}',
         dst=playbook,
         run=True,
-    )
-    this.task(
+        wait=False,
+    ))
+    this.wait_for(*tasks)
+    report = this.task(
         'SSH',
         **ansible_host,
         script=script,
         run=True,
-    )
+    ).get('output_value')['report']
+    this.save(output_value={'report': report})
     return this.success('all done')
