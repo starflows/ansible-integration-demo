@@ -4,12 +4,15 @@ import os
 
 def handler(system, this):
     inputs = this.get('input_value')
-    event = inputs['headers']['X-GitHub-Event']
+    event = inputs.get('headers', {}).get('X-GitHub-Event')
     if event == 'ping':
         return this.success('Ping event OK')
 
-    assert event == 'push', event
-    commit_sha = inputs['data_json']['after']
+    if event is None:
+        commit_sha = 'origin/master'
+    else:
+        assert event == 'push', event
+        commit_sha = inputs['data_json']['after']
     this.task(
         'GIT',
         command='get',
