@@ -2,7 +2,7 @@
 - hosts: all
   vars:
     http_port: 80
-    version: 3
+    version: 1
   tasks:
   - name: ensure apache is at the latest version
     apt:
