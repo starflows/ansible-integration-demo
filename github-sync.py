@@ -4,7 +4,8 @@ import os
 
 def handler(system, this):
     inputs = this.get('input_value')
-    event = inputs.get('headers', {}).get('X-GitHub-Event')
+    headers = inputs.get('headers', {})
+    event = headers.get('x-github-event', headers.get('X-GitHub-Event'))
     if event == 'ping':
         return this.success('Ping event OK')
 
