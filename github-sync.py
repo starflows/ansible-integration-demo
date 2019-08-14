@@ -20,7 +20,6 @@ def handler(system, this):
         repository_url='https://github.com/starflows/ansible-integration-demo.git',
         repository_path='ansible-integration-demo',
         ref=commit_sha,
-        run=True,
     )
     for file in system.files(dir='ansible-integration-demo'):
         type, path, content = file.get('type', 'path', 'content')
@@ -35,7 +34,6 @@ def handler(system, this):
 
     this.flow(
         'ansible-test',
-        run=True,
         wait=False,
     )
 
