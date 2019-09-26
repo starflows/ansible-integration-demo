@@ -50,7 +50,7 @@ be used to execute the `ansible-test` flow script using a HTTP request.
 
 The webhook endpoint will be available via the url
 ```
-https://cloudomation.com/api/webhook/<your client name>/ansible-test
+https://cloudomation.com/api/1/webhook/<your client name>/ansible-test
 ```
 
 ### `client.webhook.github-push.yaml`
@@ -62,7 +62,7 @@ repository receives a push event.
 
 The webhook endpoint will be available via the url
 ```
-https://cloudomation.com/api/webhook/<your client name>/github-push
+https://cloudomation.com/api/1/webhook/<your client name>/github-push
 ```
 
 Please check out [Creating Webhooks](https://developer.github.com/webhooks/creating/)
