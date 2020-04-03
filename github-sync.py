@@ -1,5 +1,5 @@
-import yaml
 import os
+import yaml
 
 
 def handler(system, this):
@@ -10,27 +10,25 @@ def handler(system, this):
         return this.success('Ping event OK')
 
     if event is None:
-        commit_sha = 'origin/master'
+        ref = 'master'
     else:
         assert event == 'push', event
-        commit_sha = inputs['data_json']['after']
+        ref = inputs['data_json']['after']
     this.task(
         'GIT',
         command='get',
         repository_url='https://github.com/starflows/ansible-integration-demo.git',
-        repository_path='ansible-integration-demo',
-        ref=commit_sha,
+        files_path='ansible-integration-demo',
+        ref=ref,
     )
-    for file in system.files(dir='ansible-integration-demo'):
-        type, path, content = file.get('type', 'path', 'content')
-        if type != 'file':
-            continue
-        name, ext = os.path.splitext(os.path.basename(path))
+    for file_ in system.files(filter={'field': 'name', 'op': 'like', 'value': 'ansible-integration-demo/%'}):
+        filename, content = file_.get('name', 'content')
+        name, ext = os.path.splitext(os.path.basename(filename))
         if ext == '.yaml':
             data = yaml.safe_load(content)
-            system.setting(name, value=data)
+            system.setting(name).save(value=data)
         elif ext == '.py':
-            system.flow(name, script=content)
+            system.flow(name).save(script=content)
 
     this.flow(
         'ansible-test',
