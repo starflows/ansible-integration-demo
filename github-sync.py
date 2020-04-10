@@ -13,7 +13,7 @@ def handler(system, this):
         ref = 'master'
     else:
         assert event == 'push', event
-        ref = inputs['data_json']['after']
+        ref = inputs['json']['after']
     this.task(
         'GIT',
         command='get',
